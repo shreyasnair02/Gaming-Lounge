@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+#root {
+  background-color: #171d2b;
+  background: url("./assets/bg.png") repeat center center ;
+  min-height: 100vh;
+  overflow: hidden;
+}
+.card-div:hover img {
+  scale: 1.125;
+}

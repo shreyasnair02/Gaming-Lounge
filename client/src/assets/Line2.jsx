@@ -13,8 +13,8 @@ function Line2({ width, height, classes }) {
       <path
         d="M3 3L553 3"
         stroke="#4CC5A5"
-        stroke-width="5"
-        stroke-linecap="round"
+        strokeWidth="5"
+        strokeLinecap="round"
       />
     </svg>
   );

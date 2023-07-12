@@ -3,52 +3,14 @@ import {
   StackedCarousel,
   ResponsiveContainer,
 } from "react-stacked-center-carousel";
-// import Fab from "@material-ui/core/Fab";
-// import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-// import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-
-export const data = [
-  {
-    cover: "https://images6.alphacoders.com/679/thumb-1920-679459.jpg",
-    title: "Interstaller",
-  },
-  {
-    cover: "https://images2.alphacoders.com/851/thumb-1920-85182.jpg",
-    title: "Inception",
-  },
-  {
-    cover: "https://images6.alphacoders.com/875/thumb-1920-875570.jpg",
-    title: "Blade Runner 2049",
-  },
-  {
-    cover: "https://images6.alphacoders.com/114/thumb-1920-1141749.jpg",
-    title: "Icon man 3",
-  },
-  {
-    cover: "https://images3.alphacoders.com/948/thumb-1920-948864.jpg",
-    title: "Venom",
-  },
-  {
-    cover: "https://images2.alphacoders.com/631/thumb-1920-631095.jpg",
-    title: "Steins Gate",
-  },
-  {
-    cover: "https://images4.alphacoders.com/665/thumb-1920-665242.png",
-    title: "One Punch Man",
-  },
-  {
-    cover: "https://images2.alphacoders.com/738/thumb-1920-738176.png",
-    title: "A Silent Voice",
-  },
-  {
-    cover: "https://images8.alphacoders.com/100/thumb-1920-1005531.jpg",
-    title: "Demon Slayer",
-  },
-  {
-    cover: "https://images2.alphacoders.com/582/thumb-1920-582804.png",
-    title: "Attack On Titan",
-  },
-];
+import { NavLink } from "react-router-dom";
+import {
+  BsChevronDoubleRight,
+  BsChevronDoubleLeft,
+  BsXbox,
+  BsPlaystation,
+  BsWindows,
+} from "react-icons/bs";
 
 export default function ResponsiveCarousel(props) {
   const ref = React.useRef();
@@ -70,55 +32,82 @@ export default function ResponsiveCarousel(props) {
               slideComponent={Card}
               slideWidth={parentWidth < 800 ? parentWidth - 40 : 750}
               carouselWidth={parentWidth}
-              data={data}
+              data={props.arr}
               currentVisibleSlide={currentVisibleSlide}
               maxVisibleSlide={5}
-              useGrabCursor
+              // useGrabCursor
             />
           );
         }}
       />
       <>
-        {/* <Fab
-          style={{ position: "absolute", top: "40%", left: 10, zIndex: 10 }}
-          size="small"
-          color="primary"
+        <div
+          className="group absolute h-full w-7 lg:w-10 top-0 left-5 lg:left-28 z-10 backdrop-blur-sm backdrop-saturate-100 bg-[rgba(160, 164, 173, 0.05)]"
           onClick={() => {
             ref.current?.goBack();
           }}
         >
-          <ArrowBackIcon />
-        </Fab>
-        <Fab
-          style={{ position: "absolute", top: "40%", right: 10, zIndex: 10 }}
-          size="small"
-          color="primary"
+          <BsChevronDoubleLeft className="h-6 w-6 lg:h-12 lg:w-12 group-hover:animate-pulse absolute top-[40%] left-0 z-10" />
+        </div>
+        <div
+          className="group absolute h-full w-7 lg:w-10 top-0 right-5 lg:right-28 z-10 backdrop-blur-sm backdrop-saturate-100 bg-[rgba(160, 164, 173, 0.05)]"
           onClick={() => {
             ref.current?.goNext(6);
           }}
         >
-          <ArrowForwardIcon />
-        </Fab> */}
+          <BsChevronDoubleRight className="h-6 w-6 lg:h-12 lg:w-12 group-hover:animate-pulse absolute top-[40%] right-0 z-10" />
+        </div>
       </>
     </div>
   );
 }
 
-// Very import to memoize your Slide component otherwise there might be performance issue
-// At minimum your should do a simple React.memo(SlideComponent)
-// If you want the absolute best performance then pass in a custom comparator function like below
+const platformIcon = (platform) => {
+  const name = platform.platform.name.toLowerCase();
+  const id = platform.platform.id;
+  switch (name) {
+    case "playstation":
+      return <BsPlaystation key={id} />;
+      break;
+    case "pc":
+      return <BsWindows key={id} />;
+      break;
+    case "xbox":
+      return <BsXbox key={id} />;
+      break;
+    default:
+      break;
+  }
+};
 export const Card = React.memo(function (props) {
   const { data, dataIndex } = props;
-  const { cover } = data[dataIndex];
+  const { cover, title, id, platforms } = data[dataIndex];
+
   return (
     <div
       style={{
         width: "100%",
-        height: 300,
+        height: 400,
         userSelect: "none",
       }}
-      className="my-slide-component"
+      className="my-slide-component relative "
     >
+      <div className="absolute bottom-0 left-0 right-0 py-3 px-10 lg:px-3 drop-shadow-2xl lola ">
+        <div className="flex justify-between items-center">
+          <div className="max-w-[60%]">
+            <span className="text-sm flex gap-1">
+              {platforms.map(platformIcon)}
+            </span>
+            <div>
+              <h1 className="text-2xl">{title}</h1>
+            </div>
+          </div>
+          <NavLink to={"/"}>
+            <button className="btn btn-ghost">View</button>
+          </NavLink>
+        </div>
+      </div>
+
       <img
         style={{
           height: "100%",

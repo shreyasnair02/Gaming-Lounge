@@ -12,7 +12,7 @@ import {
   BsWindows,
 } from "react-icons/bs";
 
-export default function ResponsiveCarousel(props) {
+export default function HeroCarousel(props) {
   const ref = React.useRef();
   return (
     <div style={{ width: "100%", position: "relative" }}>

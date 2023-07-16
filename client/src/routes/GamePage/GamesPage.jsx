@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useGet } from "../../hooks/react-query";
+import { useGet } from "../../hooks/rawgQueries/rawg-queries";
 import PageWrapper from "../../utils/PageWrapper";
 import Card from "../../Components/Card";
 import SearchInput from "../../Components/SearchInput";
@@ -42,7 +42,6 @@ const GamesPage = () => {
         {mostPlayed.data && (
           <SliderCarousel arrayItems={mostPlayed.data.results} />
         )}
-        {console.log(mostPlayed.data)}
       </main>
       <main>
         Newly released

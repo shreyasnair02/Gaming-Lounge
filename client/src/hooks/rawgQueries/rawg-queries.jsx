@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getGames } from "../utils/getGames";
+import { getGames } from "../../utils/rawgRequests/getGames";
 const rawg_key = import.meta.env.VITE_RAWG_KEY;
 
 export const useGet = (objParams) => {

@@ -7,10 +7,12 @@ import {
   editComment,
   likeComment,
   deleteComment,
+  checkUser,
 } from "./controllers/postJobs.js";
 const router = Router();
 
-router.route("/users");
+router.route("/users/signup").post(createUser);
+router.route("/users/login").post(checkUser);
 router.route("/posts").get(getPosts).post(createPost);
 router
   .route("/posts/:id")

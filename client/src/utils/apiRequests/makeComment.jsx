@@ -56,3 +56,29 @@ export const deleteComment = async ({
   const data = await response.json();
   return data;
 };
+
+export const createUser = async ({ email_id, name, password }) => {
+  const response = await fetch(URL + `/users/signup`, {
+    method: "POST",
+    body: JSON.stringify({ email_id, password, name }),
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await response.json();
+  return data;
+};
+
+export const checkUser = async ({ email_id, password }) => {
+  const response = await fetch(URL + `/users/login`, {
+    method: "POST",
+    body: JSON.stringify({ email_id, password }),
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await response.json();
+  return data;
+};

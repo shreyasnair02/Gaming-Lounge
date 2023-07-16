@@ -1,18 +1,8 @@
 import { userModel } from "../../Models/UserSchema.js";
 import { postModel } from "../../Models/PostsSchema.js";
 import { commentModel } from "../../Models/CommentSchema.js";
-
-export const createUser = async (req, res) => {
-  try {
-    console.log(req.body);
-    const newUser = await userModel.create(req.body);
-    res.status(201).json(newUser);
-  } catch (error) {
-    console.error("Error creating user:", error);
-    res.status(500).json({ error: "Error creating user" });
-  }
-};
-
+import { handleValidationErrors } from "../../ErrorValidation/userValidationError.js";
+import { createToken,maxAge } from "../../utils/createToken.js";
 export const createPost = async (req, res) => {
   try {
     const newPost = await postModel.create(req.body);
@@ -96,5 +86,32 @@ export const deleteComment = async (req, res) => {
   } catch (error) {
     console.log("Error deleting comment:", error);
     res.status(500).json({ error: "Failed to delete comment" });
+  }
+};
+export const createUser = async (req, res) => {
+  try {
+    const obj = req.body;
+    const user = new userModel(obj);
+    const newUserMessage = await user.save();
+    const token = createToken(newUserMessage._id);
+    res.cookie("jwt", token, { maxAge: maxAge * 1000 });
+    res.status(201).json({ user: newUserMessage._id });
+  } catch (error) {
+    const errors = handleValidationErrors(error);
+    console.log(errors);
+    res.status(400).json({ errors });
+  }
+};
+
+export const checkUser = async (req, res) => {
+  try {
+    const { email_id, password } = req.body;
+    const user = await userModel.login(email, password);
+    const token = createToken(user._id);
+    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.status(200).json({ user: user._id });
+  } catch (error) {
+    const errors = handleValidationErrors(error);
+    res.status(400).json({ errors });
   }
 };

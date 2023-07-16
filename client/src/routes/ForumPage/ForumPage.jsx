@@ -3,6 +3,7 @@ import { getPosts } from "../../utils/apiRequests/getPosts";
 import { useGetPosts } from "../../hooks/apiQueries/api-queries";
 import { Link } from "react-router-dom";
 import PageWrapper from "../../utils/PageWrapper";
+import { useLogin } from "../../Contexts/LoginContext";
 function ForumPage() {
   const postsObj = useGetPosts([]);
 

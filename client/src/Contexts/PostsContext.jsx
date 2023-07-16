@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext,useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useGetPosts } from "../hooks/apiQueries/api-queries";
-import { useMemo } from "react";
 const Context = React.createContext({});
 
 export const usePost = () => {

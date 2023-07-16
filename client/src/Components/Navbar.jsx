@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "../assets/Logo.jsx";
+
 const Navbar = () => {
   return (
     <div>
@@ -11,6 +12,12 @@ const Navbar = () => {
           </NavLink>
         </div>
         <div className="flex-none gap-2">
+          <button
+            className="btn-link"
+            onClick={() => window.my_modal_1.showModal()}
+          >
+            Sign in
+          </button>
           <div className="dropdown dropdown-end z-10">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">

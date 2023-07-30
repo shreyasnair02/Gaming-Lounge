@@ -2,9 +2,10 @@ import { userModel } from "../../Models/UserSchema.js";
 import { postModel } from "../../Models/PostsSchema.js";
 import { commentModel } from "../../Models/CommentSchema.js";
 import { handleValidationErrors } from "../../ErrorValidation/userValidationError.js";
-import { createToken,maxAge } from "../../utils/createToken.js";
+import { createToken, maxAge } from "../../utils/createToken.js";
 export const createPost = async (req, res) => {
   try {
+    console.log(req.body);
     const newPost = await postModel.create(req.body);
     res.status(201).json(newPost);
   } catch (error) {
@@ -95,7 +96,12 @@ export const createUser = async (req, res) => {
     const newUserMessage = await user.save();
     const token = createToken(newUserMessage._id);
     res.cookie("jwt", token, { maxAge: maxAge * 1000 });
-    res.status(201).json({ user: newUserMessage._id });
+    res.status(201).json({
+      user_id: newUserMessage._id,
+      name: newUserMessage.name,
+      email_id: newUserMessage.email_id,
+      avatar_url: newUserMessage.avatar_url,
+    });
   } catch (error) {
     const errors = handleValidationErrors(error);
     console.log(errors);
@@ -106,10 +112,17 @@ export const createUser = async (req, res) => {
 export const checkUser = async (req, res) => {
   try {
     const { email_id, password } = req.body;
-    const user = await userModel.login(email, password);
+    const user = await userModel.login(email_id, password);
     const token = createToken(user._id);
-    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(200).json({ user: user._id });
+    res.cookie("jwt", token, { maxAge: maxAge * 1000 });
+    res
+      .status(200)
+      .json({
+        user_id: user._id,
+        email_id: user.email_id,
+        name: user.name,
+        avatar_url: user.avatar_url,
+      });
   } catch (error) {
     const errors = handleValidationErrors(error);
     res.status(400).json({ errors });

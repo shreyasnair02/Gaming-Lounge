@@ -11,10 +11,11 @@ const postSchema = new mongoose.Schema({
   dislikes: { type: Number, default: 0 },
   title: String,
   body: String,
+  tags: { type: [String] },
 });
 
 postSchema.pre("deleteOne", async function (next) {
-  const {post_id} = this.getQuery();
+  const { post_id } = this.getQuery();
   try {
     await mongoose.model("comments").deleteMany({ post_id });
     next();

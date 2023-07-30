@@ -56,11 +56,11 @@ const router = createBrowserRouter([
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <LoginProvider>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <LoginProvider>
         <RouterProvider router={router} />
         <ReactQueryDevtools />
-      </QueryClientProvider>
-    </LoginProvider>
+      </LoginProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );

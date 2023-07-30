@@ -9,6 +9,8 @@ export const handleValidationErrors = (err) => {
     return errorMessage;
   } else if (err.code === 11000) {
     errorMessage.email = "This email ID is already taken.";
+  } else if (err.message.includes("6 characters")) {
+    errorMessage.password = "password must contain 6 characters";
   } else if (err.message.includes("user validation failed")) {
     Object.values(err.errors).forEach((error) => {
       const { properties } = error;

@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     validate: [validator.isEmail, "Please enter a valid email"],
   },
+  avatar_url: String,
   name: { type: String, required: true },
   password: {
     type: String,
@@ -21,11 +22,12 @@ const userSchema = new mongoose.Schema({
 userSchema.pre("save", async function (next) {
   const salt = await bcrypt.genSalt();
   this.password = await bcrypt.hash(this.password, salt);
+  this.avatar_url = `https://robohash.org/${this._id}`;
   next();
 });
 
-userSchema.statics.login = async function (email, password) {
-  const user = await this.findOne({ email });
+userSchema.statics.login = async function (email_id, password) {
+  const user = await this.findOne({ email_id });
   if (user) {
     const authSuccess = await bcrypt.compare(password, user.password);
     if (authSuccess) {

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getPosts } from "../../utils/apiRequests/getPosts";
+import { getPosts, getLogout, getAuth } from "../../utils/apiRequests/getPosts";
 import {
   makeComment,
   editComment,
@@ -7,6 +7,7 @@ import {
   deleteComment,
   createUser,
   checkUser,
+  makePost,
 } from "../../utils/apiRequests/makeComment";
 
 export const useGetPosts = (endpoint) => {
@@ -17,18 +18,22 @@ export const useGetPosts = (endpoint) => {
   return obj;
 };
 
-// export const useMakePost=()=>{
-//   const obj=useMutation({
-//     mutationFn:
-//   })
-// }
+export const useMakePost = () => {
+  const queryClient = useQueryClient();
+  const obj = useMutation({
+    mutationFn: makePost,
+    onSuccess: () => {
+      queryClient.invalidateQueries("posts");
+    },
+  });
+  return obj;
+};
 
 export const useMakeComment = ({ toInvalidate, post_id }) => {
   const queryClient = useQueryClient();
   const obj = useMutation({
     mutationFn: makeComment,
     onSuccess: () => {
-      console.log(toInvalidate);
       queryClient.invalidateQueries(toInvalidate);
     },
   });
@@ -82,5 +87,30 @@ export const useLogin = () => {
   const obj = useMutation({
     mutationFn: checkUser,
   });
+  return obj;
+};
+
+export const useLogout = (endpoint) => {
+  const obj = useQuery({
+    queryKey: ["user", "logout"],
+    queryFn: getLogout,
+    enabled: false,
+  });
+
+  const handleLogout = async (setLoginData) => {
+    try {
+      await obj.refetch();
+      setLoginData(false, null);
+    } catch (error) {}
+  };
+  return { handleLogout, isLoggingout: obj.isLoading };
+};
+
+export const useCheckAuth = () => {
+  const obj = useQuery({
+    queryKey: ["user", "checkAuth"],
+    queryFn: getAuth,
+  });
+
   return obj;
 };

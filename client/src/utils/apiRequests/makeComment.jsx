@@ -82,3 +82,22 @@ export const checkUser = async ({ email_id, password }) => {
   const data = await response.json();
   return data;
 };
+
+export const makePost = async ({ user_id, tags, postContent, postTitle }) => {
+  const endpoint = "/posts";
+  const response = await fetch(URL + `${endpoint}`, {
+    method: "POST",
+    body: JSON.stringify({
+      user_id,
+      tags,
+      body: postContent,
+      title: postTitle,
+    }),
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await response.json();
+  return data;
+};

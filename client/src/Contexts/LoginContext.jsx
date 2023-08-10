@@ -19,7 +19,6 @@ export const LoginProvider = ({ children }) => {
   const initUserAuth = useCheckAuth();
   useEffect(() => {
     if (!initUserAuth.isLoading && !initUserAuth.isError && initUserAuth.data) {
-      console.log(initUserAuth.data)
       setLoginData(true, initUserAuth.data);
     }
   }, [initUserAuth.data]);

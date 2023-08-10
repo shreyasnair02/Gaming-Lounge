@@ -48,14 +48,12 @@ const GamesPage = () => {
         {newlyReleased.data && (
           <SliderCarousel arrayItems={newlyReleased.data.results} />
         )}
-        {console.log(newlyReleased.data)}
       </main>
       <main>
         Upcoming games
         {newTitles.data && (
           <SliderCarousel arrayItems={newTitles.data.results} />
         )}
-        {console.log(newTitles.data)}
       </main>
     </PageWrapper>
   );

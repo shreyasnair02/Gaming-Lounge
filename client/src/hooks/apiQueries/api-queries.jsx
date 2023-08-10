@@ -8,6 +8,7 @@ import {
   createUser,
   checkUser,
   makePost,
+  likePost
 } from "../../utils/apiRequests/makeComment";
 
 export const useGetPosts = (endpoint) => {
@@ -45,7 +46,6 @@ export const useEditComment = ({ toInvalidate, post_id }) => {
   const obj = useMutation({
     mutationFn: editComment,
     onSuccess: () => {
-      console.log(toInvalidate);
       queryClient.invalidateQueries(toInvalidate);
     },
   });
@@ -57,7 +57,17 @@ export const useLikeComment = ({ toInvalidate, post_id }) => {
   const obj = useMutation({
     mutationFn: likeComment,
     onSuccess: () => {
-      console.log(toInvalidate);
+      queryClient.invalidateQueries(toInvalidate);
+    },
+  });
+  return obj;
+};
+
+export const useLikePost = ({ toInvalidate, post_id }) => {
+  const queryClient = useQueryClient();
+  const obj = useMutation({
+    mutationFn: likePost,
+    onSuccess: () => {
       queryClient.invalidateQueries(toInvalidate);
     },
   });
@@ -69,7 +79,6 @@ export const useDeleteComment = ({ toInvalidate, post_id }) => {
   const obj = useMutation({
     mutationFn: deleteComment,
     onSuccess: () => {
-      console.log(toInvalidate);
       queryClient.invalidateQueries(toInvalidate);
     },
   });

@@ -9,12 +9,11 @@ export const requireAuth = (req, res, next) => {
       if (err) {
         res.json({ msg: "failed. redirect yourself" });
       } else {
-        console.log(decodedToken);
         next();
       }
     });
   } else {
-    res.send("failed. redirect yourself");
+    res.send({ msg: "failed. redirect yourself" });
   }
 };
 export const checkUserAuthGet = async (req, res, next) => {

@@ -15,7 +15,8 @@ function CreatePostModal({
   user_id,
 }) {
   const makePost = useMakePost();
-  const handleAddTag = () => {
+  const handleAddTag = (e) => {
+    e.preventDefault();
     if (postFlair) {
       setTags([...tags, postFlair]);
       setPostFlair("");
@@ -33,7 +34,10 @@ function CreatePostModal({
       .then((data) => {
         handleModalOpen(false);
       });
-    console.log("helo");
+    setTags([]);
+    setPostFlair("");
+    setPostTitle("");
+    setPostContent("");
   };
 
   return ReactDOM.createPortal(
@@ -91,6 +95,7 @@ function CreatePostModal({
                     className="w-full border rounded-l px-3 py-2"
                     value={postFlair}
                     onChange={(e) => setPostFlair(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && handleAddTag(e)}
                   />
                   <button
                     onClick={handleAddTag}

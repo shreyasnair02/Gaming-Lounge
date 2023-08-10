@@ -7,6 +7,7 @@ import {
   editComment,
   likeComment,
   deleteComment,
+  likePost,
   checkUser,
 } from "./controllers/postJobs.js";
 import { checkUserAuthGet, requireAuth } from "../utils/authMiddleware.js";
@@ -16,7 +17,11 @@ router.route("/users/checkauth").get(checkUserAuthGet);
 router.route("/users/signup").post(createUser);
 router.route("/users/login").post(checkUser);
 router.route("/users/logout").get(getLogout);
-router.route("/posts").get(getPosts).post(requireAuth, createPost);
+router
+  .route("/posts")
+  .get(getPosts)
+  .post(requireAuth, createPost)
+  .put(requireAuth, likePost);
 router
   .route("/posts/:id")
   .get(getPost)

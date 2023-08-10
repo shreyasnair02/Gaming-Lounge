@@ -6,16 +6,16 @@ import { useSignUp, useLogin } from "../../hooks/apiQueries/api-queries";
 import { useLogin as useLoginContext } from "../../Contexts/LoginContext";
 import { MdErrorOutline } from "react-icons/md";
 export const LoginModal = ({ setIsLoginModalOpen }) => {
-  const handleClick = () => {
-    setIsLoginModalOpen(false);
-  };
+  // const handleClick = () => {
+  //   setIsLoginModalOpen(false);
+  // };
 
   return ReactDOM.createPortal(
     <>
       <dialog id="my_modal_1" className="modal">
         <div method="" className="modal-box">
           <h3 className="font-bold text-lg">Welcome</h3>
-          <FormComponent></FormComponent>
+          <FormComponent />
           <div className="modal-action">
             <button
               className="btn btn-ghost"
@@ -120,7 +120,7 @@ function FormComponent() {
                 newCheckMutation.data?.errors?.email && (
                   <span className="flex-wrap text-sm text-red-500 bg-transparent">
                     <MdErrorOutline fill="red" />
-                    {"  "}
+
                     {newCheckMutation.data?.errors?.email}
                   </span>
                 )}

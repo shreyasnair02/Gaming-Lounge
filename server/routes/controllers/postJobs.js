@@ -3,9 +3,27 @@ import { postModel } from "../../Models/PostsSchema.js";
 import { commentModel } from "../../Models/CommentSchema.js";
 import { handleValidationErrors } from "../../ErrorValidation/userValidationError.js";
 import { createToken, maxAge } from "../../utils/createToken.js";
+const updation = (action) => {
+  let update;
+  if (action === "unlikeanddislike") {
+    update = { $inc: { likes: -1, dislikes: 1 } };
+  } else if (action === "undislikeandlike") {
+    update = { $inc: { dislikes: -1, likes: 1 } };
+  } else if (action === "like") {
+    update = { $inc: { likes: 1 } };
+  } else if (action === "unlike") {
+    update = { $inc: { likes: -1 } };
+  } else if (action === "dislike") {
+    update = { $inc: { dislikes: 1 } };
+  } else if (action === "undislike") {
+    update = { $inc: { dislikes: -1 } };
+  } else {
+    throw new Error("Invalid action");
+  }
+  return update;
+};
 export const createPost = async (req, res) => {
   try {
-    console.log(req.body);
     const newPost = await postModel.create(req.body);
     res.status(201).json(newPost);
   } catch (error) {
@@ -16,7 +34,6 @@ export const createPost = async (req, res) => {
 
 export const createComment = async (req, res) => {
   try {
-    console.log(req.body);
     const newComment = await commentModel.create(req.body);
     res.status(201).json(newComment);
   } catch (error) {
@@ -28,7 +45,6 @@ export const createComment = async (req, res) => {
 export const editComment = async (req, res) => {
   const { _id } = req.body;
   try {
-    console.log(req.body);
     const newComment = await commentModel.findByIdAndUpdate(
       _id,
       {
@@ -36,7 +52,6 @@ export const editComment = async (req, res) => {
       },
       { new: true, runValidators: true }
     );
-    console.log(newComment);
     res.status(201).json(newComment);
   } catch (err) {
     console.log("Error creating comment:", err);
@@ -48,23 +63,43 @@ export const likeComment = async (req, res) => {
   const { _id } = req.body;
   const { action } = req.body;
   try {
-    let update;
-    if (action === "like") {
-      update = { $inc: { likes: 1 } };
-    } else if (action === "unlike") {
-      update = { $inc: { likes: -1 } };
-    } else {
-      throw new Error("Invalid action");
-    }
+    const update = updation(action);
     const updatedComment = await commentModel.findByIdAndUpdate(_id, update, {
       new: true,
       runValidators: true,
+      context: {
+        post_id: req.body.post_id,
+        user_id: req.body.user_id._id,
+        comment_id: req.body._id,
+        action: req.body.action,
+      },
     });
-    console.log(updatedComment);
     res.json(updatedComment);
   } catch (error) {
     console.log("Error updating comment likes:", error);
     res.status(500).json({ error: "Failed to update comment likes" });
+  }
+};
+
+export const likePost = async (req, res) => {
+  const { post_id } = req.body;
+  const { action } = req.body;
+  console.log({ "req.body": req.body });
+  try {
+    const update = updation(action);
+    const updatedPost = await postModel.findByIdAndUpdate(post_id, update, {
+      new: true,
+      runValidators: true,
+      context: {
+        post_id: req.body.post_id,
+        user_id: req.body.user_id._id,
+        action: req.body.action,
+      },
+    });
+    res.json(updatedPost);
+  } catch (error) {
+    console.log("Error updating post likes:", error);
+    res.status(500).json({ error: "Failed to update post likes" });
   }
 };
 
@@ -82,7 +117,6 @@ export const deleteComment = async (req, res) => {
     if (!deletedComment) {
       return res.status(404).json({ error: "Comment not found" });
     }
-    // console.log(deletedComment);
     res.json({ message: "Comment deleted successfully" });
   } catch (error) {
     console.log("Error deleting comment:", error);
@@ -115,14 +149,12 @@ export const checkUser = async (req, res) => {
     const user = await userModel.login(email_id, password);
     const token = createToken(user._id);
     res.cookie("jwt", token, { maxAge: maxAge * 1000 });
-    res
-      .status(200)
-      .json({
-        user_id: user._id,
-        email_id: user.email_id,
-        name: user.name,
-        avatar_url: user.avatar_url,
-      });
+    res.status(200).json({
+      user_id: user._id,
+      email_id: user.email_id,
+      name: user.name,
+      avatar_url: user.avatar_url,
+    });
   } catch (error) {
     const errors = handleValidationErrors(error);
     res.status(400).json({ errors });

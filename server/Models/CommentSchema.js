@@ -29,7 +29,6 @@ const commentSchema = new mongoose.Schema({
 
 commentSchema.pre("save", async function (next) {
   const comment = this;
-  console.log("commentSchema pre save");
   try {
     if (comment.isNew) {
       // Insert the new comment's ID into the post's comment_ids array
@@ -71,7 +70,7 @@ commentSchema.pre("deleteOne", async function (next) {
     //2. when a comment is deleted, it must be deleted from the post_id 's comment_ids array
     //3. when a comment is deleted, all its sub comments must be deleted
     const comment = await mongoose.model("comments").findById(_id);
-    console.log(comment);
+
     async function deleteSubComments(comment) {
       if (comment.childrenComment_ids?.length <= 0) return;
       for (const childId of comment.childrenComment_ids) {
@@ -94,6 +93,63 @@ commentSchema.pre("deleteOne", async function (next) {
         { _id: post_id },
         { $pull: { comment_ids: comment._id } }
       );
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+commentSchema.pre("findOneAndUpdate", async function (next) {
+  try {
+    const context = this.options.context;
+    if (!context) {
+      next();
+    }
+    const user = await mongoose.model("users").findById(context.user_id);
+
+    switch (context.action) {
+      case "like":
+        user.commentImpressions.push({
+          comment_id: context.comment_id,
+          impression: "like",
+        });
+        break;
+      case "dislike":
+        user.commentImpressions.push({
+          comment_id: context.comment_id,
+          impression: "dislike",
+        });
+        break;
+      case "unlike":
+      case "undislike":
+        user.commentImpressions = user.commentImpressions.filter(
+          (item) => item.comment_id.toString() !== context.comment_id
+        );
+        break;
+      case "unlikeanddislike":
+        user.commentImpressions = user.commentImpressions.filter(
+          (item) => item.comment_id.toString() !== context.comment_id
+        );
+        user.commentImpressions.push({
+          comment_id: context.comment_id,
+          impression: "dislike",
+        });
+        break;
+      case "undislikeandlike":
+        user.commentImpressions = user.commentImpressions.filter(
+          (item) => item.comment_id.toString() !== context.comment_id
+        );
+        user.commentImpressions.push({
+          comment_id: context.comment_id,
+          impression: "like",
+        });
+        break;
+      default:
+        throw new Error("Invalid action");
+    }
+
+    await user.save();
+
     next();
   } catch (error) {
     next(error);

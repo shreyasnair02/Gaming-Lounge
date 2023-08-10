@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLogin } from "../../Contexts/LoginContext";
 
 export function CommentForm({
   loading,
@@ -10,8 +11,9 @@ export function CommentForm({
   parentComment_id,
   setIsReplying,
   _id,
-  setIsEditing
+  setIsEditing,
 }) {
+  const { isLoggedIn, user, setLoginData } = useLogin();
   const [message, setMessage] = useState(initialValue);
   function handleSubmit(e) {
     e.preventDefault();
@@ -20,12 +22,12 @@ export function CommentForm({
       _id,
       comment_body: message,
       post_id,
-      user_id: "64b1c507b16825299de09390",
+      user_id: user.user_id,
       parentComment_id: parentComment_id || null,
     });
     if (!error) setMessage("");
-    if(setIsReplying)setIsReplying(false)
-    if(setIsEditing)setIsEditing(false)
+    if (setIsReplying) setIsReplying(false);
+    if (setIsEditing) setIsEditing(false);
   }
 
   return (

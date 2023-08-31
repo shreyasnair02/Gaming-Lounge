@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { FaRegCommentAlt } from "react-icons/fa";
 import { PiEye } from "react-icons/pi";
-
 import { useLikePost } from "../hooks/apiQueries/api-queries";
 import {
   BiUpvote,
@@ -26,18 +25,20 @@ const PostCard = ({ post }) => {
     views,
   } = post;
   const { isLoggedIn, user } = useLogin();
-
   const [isLiked, setIsLiked] = useState(() => {
-    const result = checkImpression(_id, user_id, "post");
-    return result == "like" ? true : false;
+    if (!isLoggedIn) return false;
+    const result = checkImpression(_id, user, "post");
+    return result === "like";
   });
   const [isDisliked, setIsDisliked] = useState(() => {
-    const result = checkImpression(_id, user_id, "post");
-    return result == "dislike" ? true : false;
+    if (!isLoggedIn) return false;
+    const result = checkImpression(_id, user, "post");
+    return result === "dislike";
   });
   const newPostLike = useLikePost({
     toInvalidate: ["posts"],
   });
+
   return (
     <div className="bg-gray-900 p-4 rounded-md border border-gray-700 shadow-md mb-4 text-white flex">
       <div className="flex flex-col items-center text-sm mr-2">
@@ -51,7 +52,7 @@ const PostCard = ({ post }) => {
               return;
             }
             newPostLike.mutate({
-              user_id,
+              user_id: user,
               post_id: _id,
               action: isDisliked
                 ? "undislikeandlike"
@@ -77,7 +78,7 @@ const PostCard = ({ post }) => {
               return;
             }
             newPostLike.mutate({
-              user_id,
+              user_id: user,
               post_id: _id,
               action: isLiked
                 ? "unlikeanddislike"

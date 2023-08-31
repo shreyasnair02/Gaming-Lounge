@@ -34,6 +34,7 @@ export const createPost = async (req, res) => {
 
 export const createComment = async (req, res) => {
   try {
+    console.log({ ...req.body });
     const newComment = await commentModel.create(req.body);
     res.status(201).json(newComment);
   } catch (error) {
@@ -84,7 +85,7 @@ export const likeComment = async (req, res) => {
 export const likePost = async (req, res) => {
   const { post_id } = req.body;
   const { action } = req.body;
-  console.log({ "req.body": req.body });
+
   try {
     const update = updation(action);
     const updatedPost = await postModel.findByIdAndUpdate(post_id, update, {
@@ -92,10 +93,11 @@ export const likePost = async (req, res) => {
       runValidators: true,
       context: {
         post_id: req.body.post_id,
-        user_id: req.body.user_id._id,
+        user_id: req.body.user_id,
         action: req.body.action,
       },
     });
+
     res.json(updatedPost);
   } catch (error) {
     console.log("Error updating post likes:", error);

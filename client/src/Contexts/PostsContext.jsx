@@ -1,4 +1,4 @@
-import React, { useContext,useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useGetPosts } from "../hooks/apiQueries/api-queries";
 const Context = React.createContext({});
@@ -10,9 +10,7 @@ export const usePost = () => {
 export const PostProvider = ({ children }) => {
   const { postId } = useParams();
   const postObj = useGetPosts([`${postId}`]);
-
   const commentsByParentId = useMemo(() => {
-    // const commentsByParentId = () => {
     if (postObj.data?.comment_ids === null) return;
     const group = {};
     postObj.data?.comment_ids.forEach((comment) => {
@@ -20,16 +18,15 @@ export const PostProvider = ({ children }) => {
       group[comment.parentComment_id].push(comment);
     });
     return group;
-    // }
-  }, [postObj.data?.comment_ids]);
+  }, [postObj.data]);
 
   function getReplies(parentID) {
     return commentsByParentId[parentID];
   }
   function getParentId(childID) {
     for (const parentID in commentsByParentId) {
-      for(const comment of commentsByParentId[parentID]){
-        if(comment._id===childID)return parentID
+      for (const comment of commentsByParentId[parentID]) {
+        if (comment._id === childID) return parentID;
       }
     }
   }

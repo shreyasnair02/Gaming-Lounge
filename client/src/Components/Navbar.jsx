@@ -7,6 +7,7 @@ import { useLogout } from "../hooks/apiQueries/api-queries.jsx";
 const Navbar = () => {
   const { isLoggedIn, user, setLoginData } = useLogin();
   const { handleLogout, isLoggingout } = useLogout();
+
   return (
     <div>
       <div className="navbar sticky top-0 left-0 z-10 lg:p-8 pb-2 h-[9dvh] backdrop-blur-sm backdrop-saturate-100 bg-[rgba(10, 14, 23, 0.64)] ">
@@ -44,7 +45,12 @@ const Navbar = () => {
                 <li>
                   <div className="justify-between">{user.email_id}</div>
                 </li>
-                <li onClick={() => handleLogout(setLoginData)}>
+                <li
+                  onClick={() => {
+                    handleLogout(setLoginData);
+                    window.location.reload();
+                  }}
+                >
                   <button disabled={false}>
                     {false ? (
                       <span className="loading loading-spinner"></span>

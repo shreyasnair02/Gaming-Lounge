@@ -109,47 +109,60 @@ commentSchema.pre("findOneAndUpdate", async function (next) {
 
     switch (context.action) {
       case "like":
-        user.commentImpressions.push({
-          comment_id: context.comment_id,
-          impression: "like",
+        await user.updateOne({
+          $push: {
+            commentImpressions: {
+              comment_id: context.comment_id,
+              impression: "like",
+            },
+          },
         });
         break;
       case "dislike":
-        user.commentImpressions.push({
-          comment_id: context.comment_id,
-          impression: "dislike",
+        await user.updateOne({
+          $push: {
+            commentImpressions: {
+              comment_id: context.comment_id,
+              impression: "dislike",
+            },
+          },
         });
         break;
       case "unlike":
       case "undislike":
-        user.commentImpressions = user.commentImpressions.filter(
-          (item) => item.comment_id.toString() !== context.comment_id
-        );
+        await user.updateOne({
+          $pull: { commentImpressions: { comment_id: context.comment_id } },
+        });
         break;
       case "unlikeanddislike":
-        user.commentImpressions = user.commentImpressions.filter(
-          (item) => item.comment_id.toString() !== context.comment_id
-        );
-        user.commentImpressions.push({
-          comment_id: context.comment_id,
-          impression: "dislike",
+        await user.updateOne({
+          $pull: { commentImpressions: { comment_id: context.comment_id } },
+        });
+        await user.updateOne({
+          $push: {
+            commentImpressions: {
+              comment_id: context.comment_id,
+              impression: "dislike",
+            },
+          },
         });
         break;
       case "undislikeandlike":
-        user.commentImpressions = user.commentImpressions.filter(
-          (item) => item.comment_id.toString() !== context.comment_id
-        );
-        user.commentImpressions.push({
-          comment_id: context.comment_id,
-          impression: "like",
+        await user.updateOne({
+          $pull: { commentImpressions: { comment_id: context.comment_id } },
+        });
+        await user.updateOne({
+          $push: {
+            commentImpressions: {
+              comment_id: context.comment_id,
+              impression: "like",
+            },
+          },
         });
         break;
       default:
         throw new Error("Invalid action");
     }
-
-    await user.save();
-
     next();
   } catch (error) {
     next(error);

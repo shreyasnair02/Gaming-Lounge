@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { useSignUp, useLogin } from "../../hooks/apiQueries/api-queries";
 import { useLogin as useLoginContext } from "../../Contexts/LoginContext";
 import { MdErrorOutline } from "react-icons/md";
+import { useQueryClient } from "@tanstack/react-query";
 export const LoginModal = ({ setIsLoginModalOpen }) => {
   // const handleClick = () => {
   //   setIsLoginModalOpen(false);
@@ -40,6 +41,7 @@ function FormComponent() {
   const [signupPassword, setSignupPassword] = useState("");
   const newUserMutation = useSignUp();
   const newCheckMutation = useLogin();
+  const queryClient = useQueryClient();
   const { isLoggedIn, user, setLoginData } = useLoginContext();
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -58,6 +60,7 @@ function FormComponent() {
           setLoginEmail("");
           setLoginPassword("");
           setLoginData(true, data);
+          window.location.reload();
         }
       });
   };
@@ -77,6 +80,7 @@ function FormComponent() {
           setSignupPassword("");
           setSignupName("");
           setLoginData(true, data);
+          window.location.reload();
         }
       });
   };
@@ -141,7 +145,6 @@ function FormComponent() {
                 newCheckMutation.data?.errors?.password && (
                   <span className="flex-wrap text-sm text-red-500 bg-transparent">
                     <MdErrorOutline fill="red" />
-                    {"  "}
                     {newCheckMutation.data?.errors?.password}
                   </span>
                 )}

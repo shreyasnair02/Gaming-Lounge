@@ -8,7 +8,7 @@ import {
   createUser,
   checkUser,
   makePost,
-  likePost
+  likePost,
 } from "../../utils/apiRequests/makeComment";
 
 export const useGetPosts = (endpoint) => {
@@ -58,6 +58,7 @@ export const useLikeComment = ({ toInvalidate, post_id }) => {
     mutationFn: likeComment,
     onSuccess: () => {
       queryClient.invalidateQueries(toInvalidate);
+      queryClient.invalidateQueries(["user"]);
     },
   });
   return obj;
@@ -69,6 +70,7 @@ export const useLikePost = ({ toInvalidate, post_id }) => {
     mutationFn: likePost,
     onSuccess: () => {
       queryClient.invalidateQueries(toInvalidate);
+      queryClient.invalidateQueries(["user"]);
     },
   });
   return obj;

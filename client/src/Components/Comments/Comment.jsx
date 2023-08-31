@@ -28,16 +28,24 @@ const dateFormatter = new Intl.DateTimeFormat(undefined, {
 export function checkImpression(_id, user_id, media) {
   switch (media) {
     case "comment":
-      if (user_id.commentImpressions == null) return false;
+      if (
+        user_id.commentImpressions == null ||
+        user_id.commentImpressions.length <= 0
+      )
+        return false;
       const impressionArr = user_id?.commentImpressions?.filter(
-        (item) => item.comment_id === _id
+        (item) => item.comment_id._id === _id
       );
       if (impressionArr.length > 0) {
         return impressionArr[0].impression;
       }
       break;
     case "post":
-      if (user_id.postImpressions == null) return false;
+      if (
+        user_id.postImpressions == null ||
+        user_id.postImpressions.length <= 0
+      )
+        return false;
       const impressionArr2 = user_id?.postImpressions?.filter(
         (item) => item.post_id === _id
       );
@@ -60,19 +68,22 @@ function Comment({
   user_id,
 }) {
   const { getReplies, getParentId } = usePost();
+  const { isLoggedIn, user } = useLogin();
   const childComments = getReplies(_id);
   const [isChildrenHidden, setChildrenHidden] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isLiked, setIsLiked] = useState(() => {
-    const result = checkImpression(_id, user_id, "comment");
-    return result == "like" ? true : false;
+    if (!isLoggedIn) return false;
+    const result = checkImpression(_id, user, "comment");
+    return result === "like";
   });
   const [isDisliked, setIsDisliked] = useState(() => {
-    const result = checkImpression(_id, user_id, "comment");
-    return result == "dislike" ? true : false;
+    if (!isLoggedIn) return false;
+    console.log(_id, user, "comment");
+    const result = checkImpression(_id, user, "comment");
+    return result === "dislike";
   });
-  const { isLoggedIn, user } = useLogin();
   const newCommentMutation = useMakeComment({
     post_id,
     toInvalidate: ["posts", `${post_id}`],
@@ -122,8 +133,8 @@ function Comment({
               onSubmit={newCommentEditMutation.mutate}
               _id={_id}
               setIsEditing={setIsEditing}
-              // loading={updateCommentFn.loading}
-              // error={updateCommentFn.error}
+              loading={newCommentEditMutation.isLoading}
+              error={newCommentEditMutation.error}
             />
           ) : (
             <p className="text-gray-300 mt-1 mb-2">{comment_body}</p>
@@ -135,9 +146,8 @@ function Comment({
                   window.my_modal_1.showModal();
                   return;
                 }
-
                 newCommentLikeMutation.mutate({
-                  user_id,
+                  user_id: user,
                   post_id,
                   action: isDisliked
                     ? "undislikeandlike"
@@ -162,7 +172,7 @@ function Comment({
                   return;
                 }
                 newCommentLikeMutation.mutate({
-                  user_id,
+                  user_id: user,
                   post_id,
                   action: isLiked
                     ? "unlikeanddislike"
@@ -193,7 +203,7 @@ function Comment({
               isActive
               aria-label={isReplying ? "Cancel Reply" : "Reply"}
             />
-            {isLoggedIn && isOp(user.user_id, user_id._id) && (
+            {isLoggedIn && isOp(user._id, user_id._id) && (
               <IconBtn
                 onClick={() => setIsEditing((prev) => !prev)}
                 Icon={BiEdit}
@@ -202,7 +212,7 @@ function Comment({
                 isActive
               />
             )}
-            {isLoggedIn && isOp(user.user_id, user_id._id) && (
+            {isLoggedIn && isOp(user._id, user_id._id) && (
               <IconBtn
                 onClick={() =>
                   newCommentDeleteMutation.mutate({

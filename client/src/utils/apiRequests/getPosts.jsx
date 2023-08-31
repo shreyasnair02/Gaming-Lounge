@@ -2,7 +2,11 @@ const URL = import.meta.env.VITE_SERVER_URL;
 
 export const getPosts = async ({ queryKey }) => {
   const endpoint = `/${queryKey?.join("/")}`;
-  const response = await fetch(URL + `${endpoint}`);
+  console.log("getting posts " + endpoint);
+  const response = await fetch(URL + `${endpoint}`, {
+    method: "GET",
+    credentials: "include",
+  });
   const data = await response.json();
   return data;
 };

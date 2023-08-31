@@ -33,49 +33,65 @@ postSchema.pre("findOneAndUpdate", async function (next) {
     if (!context) {
       next();
     }
-    const user = await mongoose.model("users").findById(context.user_id);
+
+    const user = await mongoose.model("users").findById(context.user_id._id);
 
     switch (context.action) {
       case "like":
-        user.postImpressions.push({
-          post_id: context.post_id,
-          impression: "like",
+        await user.updateOne({
+          $push: {
+            postImpressions: {
+              post_id: context.post_id,
+              impression: "like",
+            },
+          },
         });
         break;
       case "dislike":
-        user.postImpressions.push({
-          post_id: context.post_id,
-          impression: "dislike",
+        await user.updateOne({
+          $push: {
+            postImpressions: {
+              post_id: context.post_id,
+              impression: "dislike",
+            },
+          },
         });
         break;
       case "unlike":
       case "undislike":
-        user.postImpressions = user.postImpressions.filter(
-          (item) => item.post_id.toString() !== context.post_id
-        );
+        await user.updateOne({
+          $pull: { postImpressions: { post_id: context.post_id } },
+        });
         break;
       case "unlikeanddislike":
-        user.postImpressions = user.postImpressions.filter(
-          (item) => item.post_id.toString() !== context.post_id
-        );
-        user.postImpressions.push({
-          post_id: context.post_id,
-          impression: "dislike",
+        await user.updateOne({
+          $pull: { postImpressions: { post_id: context.post_id } },
+        });
+        await user.updateOne({
+          $push: {
+            postImpressions: {
+              post_id: context.post_id,
+              impression: "dislike",
+            },
+          },
         });
         break;
       case "undislikeandlike":
-        user.postImpressions = user.postImpressions.filter(
-          (item) => item.post_id.toString() !== context.post_id
-        );
-        user.postImpressions.push({
-          post_id: context.post_id,
-          impression: "like",
+        await user.updateOne({
+          $pull: { postImpressions: { post_id: context.post_id } },
+        });
+        await user.updateOne({
+          $push: {
+            postImpressions: {
+              post_id: context.post_id,
+              impression: "like",
+            },
+          },
         });
         break;
       default:
         throw new Error("Invalid action");
     }
-    await user.save();
     next();
   } catch (error) {
     next(error);

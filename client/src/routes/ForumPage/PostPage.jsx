@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaRegCommentAlt } from "react-icons/fa";
 import PageWrapper from "../../utils/PageWrapper";
+import { useLocation } from "react-router-dom";
 // import { useParams } from "react-router-dom";
 import { PiEye } from "react-icons/pi";
 import {
@@ -20,28 +21,29 @@ import CommentForm from "../../Components/Comments/CommentForm";
 import IconBtn from "../../Components/Buttons/IconBtn";
 import { checkImpression } from "../../Components/Comments/Comment";
 import { useLogin } from "../../Contexts/LoginContext";
+import { useEffect } from "react";
 
 function PostPage() {
   const { isLoggedIn, user } = useLogin();
-  const { post, rootComments, getReplies } = usePost();
+  let { post, rootComments, getReplies } = usePost();
   const newCommentMutation = useMakeComment({
     post_id: post._id,
     toInvalidate: ["posts", `${post._id}`],
   });
   const [isLiked, setIsLiked] = useState(() => {
-    const result = checkImpression(post._id, post.user_id, "post");
-    console.log(post._id, post.user_id);
-    return result == "like" ? true : false;
+    if (!isLoggedIn) return false;
+    const result = checkImpression(post._id, user, "post");
+    return result === "like";
   });
   const [isDisliked, setIsDisliked] = useState(() => {
-    const result = checkImpression(post._id, post.user_id, "post");
-    console.log(post._id, post.user_id);
-    return result == "dislike" ? true : false;
+    if (!isLoggedIn) return false;
+    const result = checkImpression(post._id, user, "post");
+    return result === "dislike";
   });
   const newPostLike = useLikePost({
-    toInvalidate: ["posts"],
+    toInvalidate: ["posts", `${post._id}`],
   });
-
+ 
   return (
     <PageWrapper>
       <div className=" min-h-screen text-white">
@@ -52,15 +54,13 @@ function PostPage() {
                 <div className="flex flex-col items-center text-sm mr-2">
                   <IconBtn
                     onClick={(e) => {
-                      // e.stopPropagation();
                       e.preventDefault();
-
                       if (!isLoggedIn) {
                         window.my_modal_1.showModal();
                         return;
                       }
                       newPostLike.mutate({
-                        user_id: post.user_id,
+                        user_id: user,
                         post_id: post._id,
                         action: isDisliked
                           ? "undislikeandlike"
@@ -86,7 +86,7 @@ function PostPage() {
                         return;
                       }
                       newPostLike.mutate({
-                        user_id: post.user_id,
+                        user_id: user,
                         post_id: post._id,
                         action: isLiked
                           ? "unlikeanddislike"

@@ -17,17 +17,18 @@ export const LoginProvider = ({ children }) => {
     setUser(userData);
   };
   const initUserAuth = useCheckAuth();
+
   useEffect(() => {
     if (!initUserAuth.isLoading && !initUserAuth.isError && initUserAuth.data) {
-      setLoginData(true, initUserAuth.data);
+      setLoginData(true, initUserAuth.data?.user);
     }
-  }, [initUserAuth.data]);
+  }, [initUserAuth.data?.user]);
   return (
     <Context.Provider value={{ isLoggedIn, user, setLoginData }}>
       {initUserAuth.isLoading ? (
-        <Loading/>
+        <Loading />
       ) : initUserAuth.isError ? (
-        <Error/>
+        <Error />
       ) : (
         children
       )}

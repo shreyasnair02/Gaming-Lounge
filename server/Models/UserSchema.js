@@ -16,22 +16,22 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter a password"],
     minlength: [6, "Minimum password length is 6 characters"],
+    select: false,
   },
   commentImpressions: [
     {
       comment_id: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: 'comments', // Reference the "comments" collection
-       
+        ref: "comments", // Reference the "comments" collection
       },
-      impression: { type: String},
+      impression: { type: String },
     },
   ],
   postImpressions: [
     {
       post_id: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: 'comments', // Reference the "comments" collection
+        ref: "posts", // Reference the "comments" collection
       },
       impression: { type: String, required: true },
     },
@@ -46,7 +46,8 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.statics.login = async function (email_id, password) {
-  const user = await this.findOne({ email_id });
+  const user = await this.findOne({ email_id }).select("+password");
+  console.log({ user });
   if (user) {
     const authSuccess = await bcrypt.compare(password, user.password);
     if (authSuccess) {

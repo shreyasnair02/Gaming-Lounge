@@ -25,14 +25,22 @@ export const checkUserAuthGet = async (req, res, next) => {
           res.json(null);
           next();
         } else {
-          let { _id, avatar_url, email_id, name } = await User.findById(
-            decodedToken.id
-          );
+          // let { _id, avatar_url, email_id, name, } = await User.findById(
+          //   decodedToken.id
+          // );
+          let user = await User.findById(decodedToken.id)
+          .populate([
+            {
+              path: "commentImpressions.comment_id",
+              populate: { path: "post_id" },
+            },
+            {
+              path: "postImpressions",
+              // populate: { path: "user_id" },
+            },
+          ]);
           res.status(201).json({
-            user_id: _id,
-            email_id,
-            name,
-            avatar_url,
+            user,
           });
           next();
         }

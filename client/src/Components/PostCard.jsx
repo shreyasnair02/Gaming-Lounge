@@ -40,6 +40,7 @@ const PostCard = ({ post }) => {
   });
 
   return (
+
     <div className="bg-gray-900 p-4 rounded-md border border-gray-700 shadow-md mb-4 text-white flex">
       <div className="flex flex-col items-center text-sm mr-2">
         <IconBtn

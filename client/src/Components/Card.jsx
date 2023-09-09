@@ -5,7 +5,7 @@ const Card = ({ dt }) => {
     <a className="group card p-[10px] h-[340px] lg:w-[350px] shadow-lg   rounded-none">
       <figure>
         <img
-          src={dt.background_image}
+          src={dt.background_image || "/src/assets/card_skeleton.png"}
           alt="game"
           className="h-32 lg:h-44 w-full object-cover object-center group-hover:brightness-[1.15]  ease-in-out duration-500"
         />

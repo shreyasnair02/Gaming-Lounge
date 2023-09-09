@@ -11,7 +11,7 @@ import {
   likePost,
 } from "../../utils/apiRequests/makeComment";
 
-export const useGetPosts = (endpoint) => {
+export const useGetPosts = (endpoint, param) => {
   const obj = useQuery({
     queryKey: ["posts", ...endpoint],
     queryFn: getPosts,

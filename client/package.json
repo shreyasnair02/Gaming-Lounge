@@ -17,6 +17,7 @@
     "react-alice-carousel": "^2.7.1",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
+    "react-responsive": "^9.0.2",
     "react-router-dom": "^6.11.2",
     "react-stacked-center-carousel": "^1.0.12"
   },

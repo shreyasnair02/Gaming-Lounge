@@ -22,6 +22,7 @@ import IconBtn from "../../Components/Buttons/IconBtn";
 import { checkImpression } from "../../Components/Comments/Comment";
 import { useLogin } from "../../Contexts/LoginContext";
 import { useEffect } from "react";
+import PostPageSkeleton from "./skeletons/PostPageSkeleton";
 
 function PostPage() {
   const { isLoggedIn, user } = useLogin();
@@ -43,7 +44,7 @@ function PostPage() {
   const newPostLike = useLikePost({
     toInvalidate: ["posts", `${post._id}`],
   });
- 
+
   return (
     <PageWrapper>
       <div className=" min-h-screen text-white">

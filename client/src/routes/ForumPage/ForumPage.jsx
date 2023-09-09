@@ -9,16 +9,19 @@ import PostCard from "../../Components/PostCard";
 import { useLocation } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
+import ForumPageSkeleton from "./skeletons/ForumPageSkeleton";
 
 function ForumPage() {
   const location = useLocation();
   const queryClient = useQueryClient();
-  const postsObj = useGetPosts([]);
- 
+  const postsObj = useGetPosts(["?sort=top"]);
+
   const { isLoggedIn, user, setLoginData } = useLogin();
+
+  if (postsObj.isLoading) return <ForumPageSkeleton />;
   return (
     <PageWrapper>
-      <div>
+      <div className="px-8 lg:px-44 lg:py-4">
         <div>
           {postsObj.data?.map((post, i) => (
             <div key={post._id}>

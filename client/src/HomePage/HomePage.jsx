@@ -12,7 +12,7 @@ const HomePage = () => {
           <div className="flex justify-center min-w-[75%] items-center flex-col">
             <div className=" mx-8 lg:m-10 min-w-[75%]">
               <h1 className="text-2xl lg:text-5xl font-normal block lg:space-y-2">
-                <span className="block text-primary">GAME.</span>
+                <span className="block text-primary ">GAME.</span>
                 <span className="block">CONNECT.</span>
                 <span className="block">CONQUER.</span>
               </h1>

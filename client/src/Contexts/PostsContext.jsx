@@ -1,6 +1,8 @@
 import React, { useContext, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useGetPosts } from "../hooks/apiQueries/api-queries";
+import PostPageSkeleton from "../routes/ForumPage/skeletons/PostPageSkeleton";
+import Error from "../utils/Error";
 const Context = React.createContext({});
 
 export const usePost = () => {
@@ -40,9 +42,9 @@ export const PostProvider = ({ children }) => {
       }}
     >
       {postObj.isLoading ? (
-        <div>Loading</div>
+        <PostPageSkeleton />
       ) : postObj.isError ? (
-        <div>Error</div>
+        <Error />
       ) : (
         children
       )}

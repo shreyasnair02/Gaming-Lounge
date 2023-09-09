@@ -6,24 +6,28 @@ import { maxAge } from "../../utils/createToken.js";
 import { v4 as uuid } from "uuid";
 import { connectToRedis } from "../../database/cache.js";
 const redisClient = await connectToRedis();
-export const getPosts = async (req, res) => {
-  const gl_uuid = req.cookies.gl_uuid;
-  if (!gl_uuid) {
-    res.cookie("gl_uuid", uuid(), { maxAge: maxAge * 1000 });
-  }
-  const data = await postModel
-    .find({})
-    .sort({ createdOn: -1 })
-    .populate([
-      { path: "user_id" },
-      {
-        path: "comment_ids",
-        options: { sort: { createdOn: -1 } },
-        populate: { path: "user_id" },
-      },
-    ]);
-  res.json(data);
-};
+// export const getPosts = async (req, res) => {
+//   const url = req.protocol + "://" + req.get("host") + req.originalUrl;
+//   console.log("hello");
+//   console.log(req.query);
+//   const gl_uuid = req.cookies.gl_uuid;
+//   if (!gl_uuid) {
+//     res.cookie("gl_uuid", uuid(), { maxAge: maxAge * 1000 });
+//   }
+//   const data = await postModel
+//     .find({})
+//     .sort({ createdOn: -1 })
+//     .populate([
+//       { path: "user_id" },
+//       {
+//         path: "comment_ids",
+//         options: { sort: { createdOn: -1 } },
+//         populate: { path: "user_id" },
+//       },
+//     ]);
+//   res.json(data);
+// };
+
 export const getPost = async (req, res) => {
   const { id } = req.params;
   const gl_uuid = req.cookies.gl_uuid;
@@ -66,4 +70,66 @@ export const getUser = async (req, res) => {
     },
   ]);
   res.json(data);
+};
+
+export const getPosts = async (req, res) => {
+  const url = req.protocol + "://" + req.get("host") + req.originalUrl;
+  console.log("hello");
+  console.log(req.query);
+  const gl_uuid = req.cookies.gl_uuid;
+  if (!gl_uuid) {
+    res.cookie("gl_uuid", uuid(), { maxAge: maxAge * 1000 });
+  }
+  let sortOption = { createdOn: -1 };
+  const { sort } = req.query;
+  if (sort) {
+    switch (sort) {
+      case "popular":
+        sortOption = {
+          $expr: {
+            $add: [
+              { $subtract: ["$likes", "$dislikes"] },
+              { $add: ["$views", "$comments.length"] },
+            ],
+          },
+        };
+        break;
+      case "new":
+        break;
+      case "top":
+        sortOption = { $subtract: ["likes", "dislikes"] };
+        break;
+      case "controversial":
+        sortOption = {
+          $expr: {
+            $divide: [
+              { $add: ["likes", "dislikes"] },
+              { $add: [{ $subtract: ["likes", "dislikes"] }, 1] },
+            ],
+          },
+        };
+        break;
+      default:
+        // Use the default sorting option (createdOn date)
+        break;
+    }
+  }
+  try {
+    console.log({ sortOption });
+    const data = await postModel
+      .find({})
+      .sort(sortOption)
+      .populate([
+        { path: "user_id" },
+        {
+          path: "comment_ids",
+          options: { sort: { createdOn: -1 } },
+          populate: { path: "user_id" },
+        },
+      ]);
+    res.json(data);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ message: "Something went wrong" });
+  }
 };

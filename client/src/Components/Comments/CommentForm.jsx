@@ -36,26 +36,49 @@ export function CommentForm({
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="flex gap-2 items-stretch ">
-        <textarea
-          autoFocus={autoFocus}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className="flex-grow bg-slate-800 resize-none h-20 rounded-lg p-2 focus:border border-slate-400 focus:outline-none focus:border-slate-500"
-        />
-        <button
-          className="btn btn-ghost h-auto"
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? (
-            <span className="loading loading-spinner loading-md" />
-          ) : (
-            "Post"
-          )}
-        </button>
+      <div className="flex gap-2 items-stretch justify-center">
+        {isLoggedIn ? (
+          <>
+            <div className="flex items-start">
+              <img src={user.avatar_url} className="avatar h-12 rounded-full" />
+            </div>
+            <div className="bg-blue-950 w-full flex border-1 rounded-lg border textarea textarea-bordered ">
+              <textarea
+                autoFocus={autoFocus}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                className="flex-grow bg-blue-950  resize-none h-32 rounded-lg p-2 focus:baorder border-slate-400 focus:outline-none focus:border-slate-500  "
+              />
+              <button
+                className="btn btn-ghost h-auto  "
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? (
+                  <span className="loading loading-spinner loading-md" />
+                ) : (
+                  "Post"
+                )}
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className=" text-slate-300">
+            {" "}
+            Please{" "}
+            <button
+              onClick={() => window.my_modal_1.showModal()}
+              className="underline decoration-sky-500 hover:text-white transition-all"
+            >
+              {" "}
+              sign-in
+            </button>{" "}
+            to leave a comment.
+          </div>
+        )}
       </div>
-      {error ?? console.log(error)}
+
+      {error && console.log(error)}
       <div className="text-red-500">{error && "error"}</div>
     </form>
   );

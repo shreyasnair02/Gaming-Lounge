@@ -6,7 +6,14 @@ export default {
       orbitron: ["Orbitron", "sans-serif"],
       audiowide: ["Audiowide", "cursive"],
     },
-    extend: {},
+    extend: {
+      colors: {
+        gray: {
+          load1: "#2a2e3e",
+          load2: "#3d3d3d",
+        },
+      },
+    },
   },
   plugins: [require("daisyui")],
   daisyui: {

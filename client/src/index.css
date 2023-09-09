@@ -34,10 +34,24 @@
   outline: none;
   transform: translateX(-50%);
 }
-
+.collapse-line1 {
+  border: none;
+  background: none;
+  padding: 0;
+  width: 15px;
+  margin-top: 0.5rem;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  transform: translateX(-50%);
+}
 .collapse-line:hover::before,
 .collapse-line:focus-visible::before {
   background-color: hsl(235, 100%, 60%);
+}
+.collapse-line1:hover::before,
+.collapse-line1:focus-visible::before {
+  background-color: hsl(235, 100%, 56%);
 }
 
 .collapse-line::before {
@@ -48,5 +62,16 @@
   left: 50%;
   width: 1px;
   background-color: hsl(235, 50%, 74%);
+  transition: background-color 100ms ease-in-out;
+}
+
+.collapse-line1::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background-color: hsl(235, 72%, 56%);
   transition: background-color 100ms ease-in-out;
 }

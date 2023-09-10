@@ -3,7 +3,7 @@ import PageWrapper from "../utils/PageWrapper";
 import Line1 from "../assets/Line1";
 import Line2 from "../assets/Line2";
 import { NavLink } from "react-router-dom";
-
+import heroImage from "../assets/big_hero_copy_copy.png";
 const HomePage = () => {
   return (
     <PageWrapper classes={"lg:px-0 px-0 lg:pb-0"}>
@@ -36,7 +36,7 @@ const HomePage = () => {
           </div>
           <div className="w-full h-[50vh]  ">
             <img
-              src="../assets/big_hero_copy_copy.png"
+              src={heroImage}
               alt=""
               className="absolute top-1 lg:bottom-0 -right-1/4  lg:right-0 lg:w-[40%] lg:h-[90vh] h-[50vh] rounded-tl-[60%] shadow-[-9px_0px_6px_3px_#0f1626] "
             />

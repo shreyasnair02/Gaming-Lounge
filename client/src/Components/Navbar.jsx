@@ -76,8 +76,8 @@ const Navbar = () => {
                     <div className="justify-between">{user.email_id}</div>
                   </li>
                   <li
-                    onClick={() => {
-                      handleLogout(setLoginData);
+                    onClick={async () => {
+                      const wait = await handleLogout(setLoginData);
                       window.location.reload();
                     }}
                   >

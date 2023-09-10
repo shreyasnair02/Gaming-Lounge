@@ -34,7 +34,7 @@ export const createPost = async (req, res) => {
 
 export const createComment = async (req, res) => {
   try {
-    console.log({ ...req.body });
+    // console.log({ ...req.body });
     const newComment = await commentModel.create(req.body);
     res.status(201).json(newComment);
   } catch (error) {

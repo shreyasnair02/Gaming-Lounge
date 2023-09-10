@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 8000;
 app.use(cookieParser());
 app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
 app.get("/", (req, res) => {
-  console.log("received request");
+  // console.log("received request");
   res.send({ origin: process.env.CORS_ORIGIN });
 });
 app.use(express.json({ limit: "10mb" }));

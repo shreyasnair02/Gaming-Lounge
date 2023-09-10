@@ -74,8 +74,8 @@ export const getUser = async (req, res) => {
 
 export const getPosts = async (req, res) => {
   const url = req.protocol + "://" + req.get("host") + req.originalUrl;
-  console.log("hello");
-  console.log(req.query);
+  // console.log("hello");
+  // console.log(req.query);
   const gl_uuid = req.cookies.gl_uuid;
   if (!gl_uuid) {
     res.cookie("gl_uuid", uuid(), { maxAge: maxAge * 1000 });
@@ -115,7 +115,7 @@ export const getPosts = async (req, res) => {
     }
   }
   try {
-    console.log({ sortOption });
+    // console.log({ sortOption });
     const data = await postModel
       .find({})
       .sort(sortOption)
@@ -129,7 +129,7 @@ export const getPosts = async (req, res) => {
       ]);
     res.json(data);
   } catch (err) {
-    console.log(err.message);
+    // console.log(err.message);
     res.status(500).json({ message: "Something went wrong" });
   }
 };

@@ -35,6 +35,7 @@ export const getPost = async (req, res) => {
     res.cookie("gl_uuid", uuid(), {
       maxAge: maxAge * 1000,
       sameSite: "none",
+      secure: true,
     });
   } else {
     if (await redisClient.SADD(gl_uuid, id)) {
@@ -54,7 +55,7 @@ export const getPost = async (req, res) => {
 };
 export const getLogout = async (req, res) => {
   try {
-    res.cookie("jwt", "", { maxAge: 1, sameSite: "none" });
+    res.cookie("jwt", "", { maxAge: 1, sameSite: "none", secure: true });
     res.json({ message: "logged out succesfully" });
   } catch (error) {
     console.log(error.message);
@@ -81,7 +82,11 @@ export const getPosts = async (req, res) => {
   // console.log(req.query);
   const gl_uuid = req.cookies.gl_uuid;
   if (!gl_uuid) {
-    res.cookie("gl_uuid", uuid(), { maxAge: maxAge * 1000, sameSite: "none" });
+    res.cookie("gl_uuid", uuid(), {
+      maxAge: maxAge * 1000,
+      sameSite: "none",
+      secure: true,
+    });
   }
   let sortOption = { createdOn: -1 };
   const { sort } = req.query;

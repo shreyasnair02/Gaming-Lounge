@@ -78,7 +78,7 @@ const Navbar = () => {
                   <li
                     onClick={() => {
                       handleLogout(setLoginData);
-                      // window.location.reload();
+                      window.location.reload();
                     }}
                   >
                     <button disabled={false}>

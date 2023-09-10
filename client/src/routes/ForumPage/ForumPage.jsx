@@ -14,7 +14,7 @@ import ForumPageSkeleton from "./skeletons/ForumPageSkeleton";
 function ForumPage() {
   const location = useLocation();
   const queryClient = useQueryClient();
-  const postsObj = useGetPosts(["?sort=top"]);
+  const postsObj = useGetPosts(["?sort=new"]);
 
   const { isLoggedIn, user, setLoginData } = useLogin();
 

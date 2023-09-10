@@ -35,7 +35,11 @@ const Navbar = () => {
             <NavLink
               className={({ isActive, isPending }) =>
                 `btn btn-sm lg:btn-md btn-ghost normal-case text-sm text-slate-300 hover:text-slate-100  
-                ${isActive ? " bg-neutral underline decoration-info  decoration-2 underline-offset-2" : " "} `
+                ${
+                  isActive
+                    ? " bg-neutral underline decoration-info  decoration-2 underline-offset-2"
+                    : " "
+                } `
               }
               to={"/forum"}
             >
@@ -74,7 +78,7 @@ const Navbar = () => {
                   <li
                     onClick={() => {
                       handleLogout(setLoginData);
-                      window.location.reload();
+                      // window.location.reload();
                     }}
                   >
                     <button disabled={false}>

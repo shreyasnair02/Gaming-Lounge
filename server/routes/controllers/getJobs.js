@@ -55,8 +55,8 @@ export const getPost = async (req, res) => {
 };
 export const getLogout = async (req, res) => {
   try {
-    res.cookie("jwt", "", {
-      maxAge: 1,
+    res.cookie("jwt", "logout", {
+      expires: new Date(Date.now()),
       sameSite: "none",
       secure: true,
     });

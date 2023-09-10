@@ -97,7 +97,7 @@ export const getPosts = async (req, res) => {
       case "new":
         break;
       case "top":
-        sortOption = { $subtract: ["likes", "dislikes"] };
+        sortOption = { $subtract: ["$likes", "$dislikes"] };
         break;
       case "controversial":
         sortOption = {

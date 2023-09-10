@@ -11,14 +11,12 @@ function PostCardSkeleton() {
       <div className="flex flex-col items-center text-sm mr-2">
         <BiUpvote
           size={18}
-          Icon={BiUpvote}
           className="text-gray-load1 animate-pulse"
           color="gray"
         />
         <span className="h-3 w-3  animate-pulse"></span>
         <BiDownvote
           size={18}
-          isActive={false}
           className=" text-gray-load1 animate-pulse"
           color="gray"
         />

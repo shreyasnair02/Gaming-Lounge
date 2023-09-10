@@ -131,7 +131,7 @@ export const createUser = async (req, res) => {
     const user = new userModel(obj);
     const newUserMessage = await user.save();
     const token = createToken(newUserMessage._id);
-    res.cookie("jwt", token, { maxAge: maxAge * 1000 });
+    res.cookie("jwt", token, { maxAge: maxAge * 1000, sameSite: "none" });
     res.status(201).json({
       user_id: newUserMessage._id,
       name: newUserMessage.name,
@@ -150,7 +150,7 @@ export const checkUser = async (req, res) => {
     const { email_id, password } = req.body;
     const user = await userModel.login(email_id, password);
     const token = createToken(user._id);
-    res.cookie("jwt", token, { maxAge: maxAge * 1000 });
+    res.cookie("jwt", token, { maxAge: maxAge * 1000, sameSite: "none" });
     res.status(200).json({
       user_id: user._id,
       email_id: user.email_id,

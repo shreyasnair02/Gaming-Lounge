@@ -55,7 +55,12 @@ export const getPost = async (req, res) => {
 };
 export const getLogout = async (req, res) => {
   try {
-    res.cookie("jwt", "", { maxAge: 1, sameSite: "none", secure: true });
+    res.cookie("jwt", "", {
+      maxAge: 1,
+      sameSite: "none",
+      secure: true,
+    });
+    console.log("request received");
     res.json({ message: "logged out succesfully" });
   } catch (error) {
     console.log(error.message);

@@ -5,23 +5,31 @@ import { handleValidationErrors } from "../../ErrorValidation/userValidationErro
 import { createToken, maxAge } from "../../utils/createToken.js";
 const updation = (action) => {
   let update;
-  if (action === "unlikeanddislike") {
-    update = { $inc: { likes: -1, dislikes: 1 } };
-  } else if (action === "undislikeandlike") {
-    update = { $inc: { dislikes: -1, likes: 1 } };
-  } else if (action === "like") {
-    update = { $inc: { likes: 1 } };
-  } else if (action === "unlike") {
-    update = { $inc: { likes: -1 } };
-  } else if (action === "dislike") {
-    update = { $inc: { dislikes: 1 } };
-  } else if (action === "undislike") {
-    update = { $inc: { dislikes: -1 } };
-  } else {
-    throw new Error("Invalid action");
+  switch (action) {
+    case "unlikeanddislike":
+      update = { $inc: { likes: -1, dislikes: 1 } };
+      break;
+    case "undislikeandlike":
+      update = { $inc: { dislikes: -1, likes: 1 } };
+      break;
+    case "like":
+      update = { $inc: { likes: 1 } };
+      break;
+    case "unlike":
+      update = { $inc: { likes: -1 } };
+      break;
+    case "dislike":
+      update = { $inc: { dislikes: 1 } };
+      break;
+    case "undislike":
+      update = { $inc: { dislikes: -1 } };
+      break;
+    default:
+      throw new Error("Invalid action");
   }
   return update;
 };
+
 export const createPost = async (req, res) => {
   try {
     const newPost = await postModel.create(req.body);
@@ -97,7 +105,11 @@ export const likePost = async (req, res) => {
         action: req.body.action,
       },
     });
-
+    await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+      }, 10000);
+    });
     res.json(updatedPost);
   } catch (error) {
     console.log("Error updating post likes:", error);

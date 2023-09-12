@@ -75,3 +75,23 @@
   background-color: hsl(235, 72%, 56%);
   transition: background-color 100ms ease-in-out;
 }
+
+/* 
+.radio-label {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #3498db; /* Customize the background color */
+/*
+  color: #fff; /* Customize the text color */
+/*
+  cursor: pointer;
+}
+*/
+/* Style for the checked radio button */
+/*
+.radio:checked + .radio-label {
+  background-color: #e74c3c; /* Customize the background color when checked */
+/*
+} 
+
+*/

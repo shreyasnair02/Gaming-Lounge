@@ -36,21 +36,21 @@ export function CommentForm({
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="flex gap-2 items-stretch justify-center">
+      <div className="flex gap-2 items-stretch justify-center mt-10">
         {isLoggedIn ? (
           <>
             <div className="flex items-start">
               <img src={user.avatar_url} className="avatar h-12 rounded-full" />
             </div>
-            <div className="bg-blue-950 w-full flex border-1 rounded-lg border textarea textarea-bordered ">
+            <div className=" w-full flex gap-3 border-1 rounded-lg border textarea textarea-bordered ">
               <textarea
                 autoFocus={autoFocus}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="flex-grow bg-blue-950  resize-none h-32 rounded-lg p-2 focus:baorder border-slate-400 focus:outline-none focus:border-slate-500  "
+                className="flex-grow bg-slate-900  resize-none h-32 rounded-lg p-2 focus:baorder border-slate-400 focus:outline-none focus:border-slate-500  "
               />
               <button
-                className="btn btn-ghost h-auto  "
+                className="btn btn-ghost h-auto"
                 type="submit"
                 disabled={loading}
               >
@@ -70,9 +70,8 @@ export function CommentForm({
               onClick={() => window.my_modal_1.showModal()}
               className="underline decoration-sky-500 hover:text-white transition-all"
             >
-              {" "}
               sign-in
-            </button>{" "}
+            </button>
             to leave a comment.
           </div>
         )}

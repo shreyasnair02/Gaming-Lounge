@@ -17,9 +17,13 @@ function CreatePost({ user_id }) {
     setModalIsOpen(true);
   };
   return (
-    <div>
-      <button onClick={() => handleModalOpen(true)} className="btn btn-square">
+    <>
+      <button
+        onClick={() => handleModalOpen(true)}
+        className="btn btn-secondary lg:btn-lg btn-sm ml-auto"
+      >
         <AiOutlinePlus />
+        New Post
       </button>
       <CreatePostModal
         setPostContent={setPostContent}
@@ -33,7 +37,7 @@ function CreatePost({ user_id }) {
         handleModalOpen={handleModalOpen}
         user_id={user_id}
       />
-    </div>
+    </>
   );
 }
 

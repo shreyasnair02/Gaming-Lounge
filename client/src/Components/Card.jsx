@@ -8,6 +8,7 @@ const Card = ({ dt }) => {
           src={dt.background_image || card_skeleton}
           alt="game"
           className="h-32 lg:h-44 w-full object-cover object-center group-hover:brightness-[1.15]  ease-in-out duration-500"
+          loading="lazy"
         />
       </figure>
       <div className="card-body p-3 bg-transparent">

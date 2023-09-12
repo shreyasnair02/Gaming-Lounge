@@ -40,12 +40,10 @@ const PostCard = ({ post }) => {
   });
 
   return (
-
     <div className="bg-gray-900 p-4 rounded-md border border-gray-700 shadow-md mb-4 text-white flex">
       <div className="flex flex-col items-center text-sm mr-2">
         <IconBtn
           onClick={(e) => {
-            // e.stopPropagation();
             e.preventDefault();
 
             if (!isLoggedIn) {
@@ -66,10 +64,16 @@ const PostCard = ({ post }) => {
           }}
           area-label="like"
           Icon={isLiked ? BiSolidUpvote : BiUpvote}
-          isActive
+          isActive={!newPostLike.isLoading}
         />
 
-        <span className="text-sm">{likes - dislikes}</span>
+        <span className="text-sm">
+          {newPostLike.isLoading ? (
+            <span className="loading loading-spinner loading-sm"></span>
+          ) : (
+            likes - dislikes
+          )}
+        </span>
         <IconBtn
           area-label="like"
           onClick={(e) => {
@@ -91,7 +95,7 @@ const PostCard = ({ post }) => {
             setIsDisliked((prev) => !prev);
           }}
           Icon={isDisliked ? BiSolidDownvote : BiDownvote}
-          isActive
+          isActive={!newPostLike.isLoading}
         />
       </div>
       <div>
@@ -100,6 +104,7 @@ const PostCard = ({ post }) => {
             src={user_id.avatar_url}
             alt={`${user_id.name}'s avatar`}
             className="w-8 h-8 rounded-full mr-2"
+            loading="lazy"
           />
           <span className="text-gray-500 text-sm hover:underline">
             {user_id.name}

@@ -105,18 +105,20 @@ function CreatePostModal({
                     Add Tag
                   </button>
                 </div>
-                <div className="flex items-center flex-wrap mt-2 p-2 bg-neutral rounded-lg ">
-                  {tags.map((tag) => (
-                    <button
-                      onClick={() => handleRemoveTag(tag)}
-                      key={tag}
-                      className="inline-flex items-center  mr-2 btn btn-ghost btn-sm"
-                    >
-                      <span className="px-2 py-1">{tag}</span>
-                      <RiCloseFill size={25} className="" />
-                    </button>
-                  ))}
-                </div>
+                {tags.length != 0 && (
+                  <div className="flex items-center flex-wrap mt-2 p-2 bg- rounded-lg ">
+                    {tags.map((tag) => (
+                      <button
+                        onClick={() => handleRemoveTag(tag)}
+                        key={tag}
+                        className="inline-flex items-center  mr-2 btn btn-ghost btn-sm lg:btn-md bg-neutral"
+                      >
+                        <span className="px-2 py-1">{tag}</span>
+                        <RiCloseFill size={25} className="" />
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
               <button type="submit" className="w-full btn btn-info">
                 Create Post

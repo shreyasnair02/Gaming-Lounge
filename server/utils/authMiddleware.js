@@ -28,8 +28,7 @@ export const checkUserAuthGet = async (req, res, next) => {
           // let { _id, avatar_url, email_id, name, } = await User.findById(
           //   decodedToken.id
           // );
-          let user = await User.findById(decodedToken.id)
-          .populate([
+          let user = await User.findById(decodedToken.id).populate([
             {
               path: "commentImpressions.comment_id",
               populate: { path: "post_id" },

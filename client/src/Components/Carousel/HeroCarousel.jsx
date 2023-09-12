@@ -117,6 +117,7 @@ export const Card = React.memo(function (props) {
         }}
         draggable={false}
         src={cover}
+        loading="lazy"
       />
     </div>
   );

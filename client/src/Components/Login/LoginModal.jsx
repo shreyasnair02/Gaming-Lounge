@@ -151,7 +151,11 @@ function FormComponent() {
             </div>
           </div>
           <button type="submit" className="btn btn-primary">
-            Login
+            {newCheckMutation.isLoading ? (
+              <span className="loading loading-spinner loading-sm"></span>
+            ) : (
+              <span>Login</span>
+            )}
           </button>
         </form>
       ) : (

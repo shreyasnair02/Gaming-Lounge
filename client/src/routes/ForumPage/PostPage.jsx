@@ -77,7 +77,13 @@ function PostPage() {
                     isActive
                   />
 
-                  <span className="text-sm">{post.likes - post.dislikes}</span>
+                  <span className="text-sm">
+                    {newPostLike.isLoading ? (
+                      <span className="loading loading-spinner loading-sm"></span>
+                    ) : (
+                      post.likes - post.dislikes
+                    )}
+                  </span>
                   <IconBtn
                     area-label="like"
                     onClick={(e) => {
@@ -99,7 +105,7 @@ function PostPage() {
                       setIsDisliked((prev) => !prev);
                     }}
                     Icon={isDisliked ? BiSolidDownvote : BiDownvote}
-                    isActive
+                    isActive={!newPostLike.isLoading}
                   />
                 </div>
                 <div className="items-center gap-4 ">

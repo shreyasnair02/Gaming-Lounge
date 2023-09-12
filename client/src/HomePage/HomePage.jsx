@@ -3,6 +3,9 @@ import PageWrapper from "../utils/PageWrapper";
 import Line1 from "../assets/Line1";
 import Line2 from "../assets/Line2";
 import { NavLink } from "react-router-dom";
+import { AiOutlineRight, AiOutlineLeft } from "react-icons/ai";
+import { BsChevronDoubleRight } from "react-icons/bs";
+import { BiChevronsRight } from "react-icons/bi";
 import heroImage from "../assets/big_hero_copy_copy.png";
 const HomePage = () => {
   return (
@@ -20,12 +23,52 @@ const HomePage = () => {
                 Welcome to Gaming Lounge, your portal to a gaming experience
                 like no other.
               </p>
-              <NavLink
-                className="btn btn-sm btn-secondary lg:btn lg:btn-secondary shadow-lg shadow-cyan-500/50 rounded-3xl"
-                to={"/games"}
-              >
-                Get Started
-              </NavLink>
+              <div className="flex gap-5 items-center">
+                <NavLink
+                  className="btn btn-sm btn-secondary lg:btn lg:btn-secondary shadow-2xl  rounded-3xl"
+                  to={"/games"}
+                >
+                  Get Started
+                </NavLink>
+                <NavLink
+                  className="link hover:text-cyan-400 transition-all ease"
+                  to={"/forum"}
+                >
+                  <span className="flex items-center text-xl ">
+                    Visit Hive
+                    <AiOutlineRight
+                      color="cyan"
+                      size={25}
+                      className="animate-pulse"
+                    />
+                    <AiOutlineRight
+                      color="cyan"
+                      className="animate-pulse relative left-[-14px]"
+                      size={25}
+                    />
+                    <AiOutlineRight
+                      color="cyan"
+                      className="animate-pulse relative left-[-28px]"
+                      size={25}
+                    />
+                    {/* <BiChevronsRight
+                      color="cyan"
+                      size={40}
+                      className="animate-pulse"
+                    /> 
+                    <BsChevronDoubleRight
+                      color="cyan"
+                      size={25}
+                      className="animate-pulse cubic"
+                    />
+                     <BsChevronDoubleRight
+                      color="cyan"
+                      size={25}
+                      className="animate-pulse relative left-[-10px]"
+                    /> */}
+                  </span>
+                </NavLink>
+              </div>
             </div>
             <div className="mr-auto flex flex-col lg:gap-10 py-3">
               <Line1

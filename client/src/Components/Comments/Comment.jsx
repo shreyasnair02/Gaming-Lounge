@@ -162,9 +162,15 @@ function Comment({
               Icon={isLiked ? BiSolidUpvote : BiUpvote}
               color={"text-white"}
               aria-label="like"
-              isActive
+              isActive={!newCommentLikeMutation.isLoading}
             />
-            <span className="text-sm">{likes - dislikes}</span>
+            <span className="text-sm">
+              {newCommentLikeMutation.isLoading ? (
+                <span className="loading loading-spinner loading-sm"></span>
+              ) : (
+                likes - dislikes
+              )}
+            </span>
             <IconBtn
               onClick={() => {
                 if (!isLoggedIn) {
@@ -266,9 +272,7 @@ function Comment({
         </>
       )}
     </>
-
   );
-
 }
 
 export default Comment;

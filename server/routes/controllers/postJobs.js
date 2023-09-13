@@ -105,11 +105,7 @@ export const likePost = async (req, res) => {
         action: req.body.action,
       },
     });
-    await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve();
-      }, 10000);
-    });
+
     res.json(updatedPost);
   } catch (error) {
     console.log("Error updating post likes:", error);

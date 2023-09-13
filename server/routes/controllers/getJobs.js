@@ -39,7 +39,6 @@ export const getLogout = async (req, res) => {
       sameSite: "none",
       secure: true,
     });
-    console.log("request received");
     res.json({ message: "logged out succesfully" });
   } catch (error) {
     console.log(error.message);
@@ -86,7 +85,6 @@ export const getPosts = async (req, res) => {
     }
   }
   try {
-    console.log({ sortOption });
     const data = await postModel
       .find({})
       .sort(sortOption)
